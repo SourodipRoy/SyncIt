@@ -113,7 +113,6 @@ wss.on("connection", (ws) => {
       // Ask host to create a WebRTC sender for this new peer
       if (room.hostId && room.hostId !== clientId) {
         safeSend(room.sockets.get(room.hostId), { type: "webrtc:new-peer", peerId: clientId });
-        safeSend(room.sockets.get(room.hostId), { type: "sync:request", targetId: clientId });
       }
     }
 
@@ -154,44 +153,6 @@ wss.on("connection", (ws) => {
       const room = rooms.get(roomId);
       if (room?.hostId !== clientId) return;
       broadcast(roomId, { type: "control:mute", muted: data.muted }, clientId);
-    }
-
-    else if (data.type === "control:track") {
-      const roomId = inRoom.get(clientId);
-      const room = rooms.get(roomId);
-      if (room?.hostId !== clientId) return;
-      broadcast(roomId, { type: "control:track", index: data.index }, clientId);
-    }
-
-    else if (data.type === "control:flags") {
-      const roomId = inRoom.get(clientId);
-      const room = rooms.get(roomId);
-      if (room?.hostId !== clientId) return;
-      broadcast(roomId, { type: "control:flags", flags: data.flags }, clientId);
-    }
-
-    else if (data.type === "playlist:update") {
-      const roomId = inRoom.get(clientId);
-      const room = rooms.get(roomId);
-      if (room?.hostId !== clientId) return;
-      broadcast(roomId, { type: "playlist:update", playlist: data.playlist }, clientId);
-    }
-
-    else if (data.type === "sync:request") {
-      const roomId = inRoom.get(clientId);
-      const room = rooms.get(roomId);
-      if (!room) return;
-      if (room.hostId && room.hostId !== clientId) {
-        safeSend(room.sockets.get(room.hostId), { type: "sync:request", targetId: clientId });
-      }
-    }
-
-    else if (data.type === "sync:state") {
-      const roomId = inRoom.get(clientId);
-      const room = rooms.get(roomId);
-      if (room?.hostId !== clientId) return;
-      const target = room.sockets.get(data.targetId);
-      if (target) safeSend(target, { type: "sync:state", state: data.state });
     }
 
     else if (data.type === "host:transfer") {

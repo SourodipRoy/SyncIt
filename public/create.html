@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Room - SyncIt</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="create">
+  <div class="center">
+    <h1>New Room</h1>
+    <p>Your room code:</p>
+    <div id="code" class="room-code"></div>
+    <button id="enter" class="btn">Enter Room</button>
+  </div>
+  <script>
+    const code = Math.random().toString(36).slice(2,8).toUpperCase();
+    document.getElementById('code').textContent = code;
+    document.getElementById('enter').onclick = () => {
+      location.href = `room.html?roomId=${code}&host=1`;
+    };
+  </script>
+</body>
+</html>

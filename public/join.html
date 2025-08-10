@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Join Room - SyncIt</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="join">
+  <div class="center">
+    <h1>Join Room</h1>
+    <input id="code" maxlength="6" placeholder="Room Code" class="input" />
+    <button id="join" class="btn">Join</button>
+    <p id="err" class="error"></p>
+  </div>
+  <script>
+    document.getElementById('join').onclick = () => {
+      const code = document.getElementById('code').value.trim().toUpperCase();
+      if (!/^[A-Z0-9]{6}$/.test(code)) {
+        document.getElementById('err').textContent = 'Invalid code';
+        return;
+      }
+      location.href = `room.html?roomId=${code}`;
+    };
+  </script>
+</body>
+</html>
